@@ -17,7 +17,7 @@ type Album struct {
 
 var db *sql.DB
 
-// albumsByArtist queries for albums that have the specified artist name.
+// albumsByArtist queries for albums that have the specified artist name
 func albumsByArtist(name string) ([]Album, error) {
     // An albums slice to hold data from returned rows.
     var albums []Album
