@@ -43,7 +43,7 @@ func albumsByArtist(name string) ([]Album, error) {
 
 func main() {
 	// Reemplazá estos datos con los de tu servidor MySQL
-	dsn := "guille:6z6b6ch3@tcp(192.168.0.5:3306)/recordings"
+	dsn := "juan:m3rc6d1@tcp(192.168.0.5:3306)/recordings"
 
 	db, err := sql.Open("mysql", dsn)
 	if err != nil {
