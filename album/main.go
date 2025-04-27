@@ -1,12 +1,15 @@
 package main
 
 import (
-	"database/sql"
-	"fmt"
-	"log"
+    "database/sql"
+    "fmt"
+    "log"
+    "os"
 
-	_ "github.com/go-sql-driver/mysql"
+    "github.com/go-sql-driver/mysql"
 )
+
+var db *sql.DB
 
 type Album struct {
     ID     int64
@@ -15,9 +18,55 @@ type Album struct {
     Price  float32
 }
 
-var db *sql.DB
+func main() {
+    // Capture connection properties.
+    cfg := mysql.NewConfig()
+    cfg.User = os.Getenv("DBUSER")
+    cfg.Passwd = os.Getenv("DBPASS")
+    cfg.Net = "tcp"
+    cfg.Addr = "192.168.0.5:3306"
+    cfg.DBName = "recordings"
 
-// albumsByArtist queries for albums that have the specified artist name
+    fmt.Printf("Usr: %v\n", cfg.User)
+
+    // Get a database handle.
+    var err error
+    db, err = sql.Open("mysql", cfg.FormatDSN())
+    if err != nil {
+        log.Fatal(err)
+    }
+
+    pingErr := db.Ping()
+    if pingErr != nil {
+        log.Fatal(pingErr)
+    }
+    fmt.Println("Connected!")
+
+    albums, err := albumsByArtist("John Coltrane")
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("Albums found: %v\n", albums)
+
+    // Hard-code ID 2 here to test the query.
+    alb, err := albumByID(2)
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("Album found: %v\n", alb)
+
+    albID, err := addAlbum(Album{
+        Title:  "The Modern Sound of Betty Carter",
+        Artist: "Betty Carter",
+        Price:  49.99,
+    })
+    if err != nil {
+        log.Fatal(err)
+    }
+    fmt.Printf("ID of added album: %v\n", albID)
+}
+
+// albumsByArtist queries for albums that have the specified artist name.
 func albumsByArtist(name string) ([]Album, error) {
     // An albums slice to hold data from returned rows.
     var albums []Album
@@ -41,26 +90,31 @@ func albumsByArtist(name string) ([]Album, error) {
     return albums, nil
 }
 
-func main() {
-	// Reemplazá estos datos con los de tu servidor MySQL
-	dsn := "juan:m3rc6d1@tcp(192.168.0.5:3306)/recordings"
+// albumByID queries for the album with the specified ID.
+func albumByID(id int64) (Album, error) {
+    // An album to hold data from the returned row.
+    var alb Album
 
-	db, err := sql.Open("mysql", dsn)
-	if err != nil {
-		log.Fatal("Error al abrir la conexión:", err)
-	}
-	defer db.Close()
-
-	err = db.Ping()
-	if err != nil {
-		log.Fatal("Error al conectar a la base de datos:", err)
-	}
-
-	fmt.Println("✅ ¡Conexión exitosa a MySQL!")
-
-albums, err := albumsByArtist("John Coltrane")
-if err != nil {
-    log.Fatal(err)
+    row := db.QueryRow("SELECT * FROM album WHERE id = ?", id)
+    if err := row.Scan(&alb.ID, &alb.Title, &alb.Artist, &alb.Price); err != nil {
+        if err == sql.ErrNoRows {
+            return alb, fmt.Errorf("albumsById %d: no such album", id)
+        }
+        return alb, fmt.Errorf("albumsById %d: %v", id, err)
+    }
+    return alb, nil
 }
-fmt.Printf("Albums found: %v\n", albums)
+
+// addAlbum adds the specified album to the database,
+// returning the album ID of the new entry
+func addAlbum(alb Album) (int64, error) {
+    result, err := db.Exec("INSERT INTO album (title, artist, price) VALUES (?, ?, ?)", alb.Title, alb.Artist, alb.Price)
+    if err != nil {
+        return 0, fmt.Errorf("addAlbum: %v", err)
+    }
+    id, err := result.LastInsertId()
+    if err != nil {
+        return 0, fmt.Errorf("addAlbum: %v", err)
+    }
+    return id, nil
 }
