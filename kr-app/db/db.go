@@ -15,15 +15,12 @@ func Init() {
 	var err error
 	
 	cfg := mysql.NewConfig()
-    //cfg.User = os.Getenv("DBUSER")
-	cfg.User = "guille"
-    //cfg.Passwd = os.Getenv("DBPASS")
-	cfg.Passwd = "6z6b6ch3"
+    cfg.User = os.Getenv("DBUSER")
+    cfg.Passwd = os.Getenv("DBPASS")
     cfg.Net = "tcp"
-    cfg.Addr = "192.168.0.5:3306"
+    cfg.Addr = os.Getenv("DBCONN_STR")
     cfg.DBName = "recordings"
 	
-	DB, err = sql.Open("sqlite3", "krapp.db") // usa "user:pass@tcp(localhost:3306)/dbname" para MySQL
 	DB, err = sql.Open("mysql", cfg.FormatDSN()) 
 	if err != nil {
 		log.Fatal(err)
