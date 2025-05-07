@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Administrador de KRs</title>
+  <script src="https://unpkg.com/htmx.org@1.9.6"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      padding: 2rem;
+    }
+    .kr-item {
+      background-color: #f8f9fa;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="mb-4">Resultados Clave (KRs)</h1>
+
+    <!-- Contenedor de la lista de KRs -->
+    <div 
+      id="kr-list" 
+      hx-get="/krs" 
+      hx-trigger="load" 
+      hx-target="#kr-list" 
+      hx-swap="innerHTML">
+      Cargando KRs...
+    </div>
+  </div>
+</body>
+</html>

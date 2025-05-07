@@ -1,0 +1,23 @@
+<div id="kr-{{.ID}}" class="kr-item border p-3 mb-3 rounded shadow-sm">
+    <h3>{{.Title}}</h3>
+    <p>{{.Description}}</p>
+  
+    <button 
+      hx-delete="/krs/{{.ID}}" 
+      hx-target="#kr-{{.ID}}" 
+      hx-swap="outerHTML"
+      class="btn btn-danger btn-sm">
+      Eliminar KR
+    </button>
+  
+    <h5>Sub-Tareas</h5>
+    <div id="subtasks-{{.ID}}">
+      <!-- Las sub-tareas se pueden cargar con un GET si querés -->
+    </div>
+  
+    <form hx-post="/krs/{{.ID}}/subtasks" hx-target="#subtasks-{{.ID}}" hx-swap="beforeend" class="mt-2">
+      <input type="text" name="title" placeholder="Nueva sub-tarea" required class="form-control form-control-sm mb-1" />
+      <button type="submit" class="btn btn-primary btn-sm">Agregar</button>
+    </form>
+  </div>
+  

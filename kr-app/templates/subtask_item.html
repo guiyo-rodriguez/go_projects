@@ -1,0 +1,17 @@
+<div id="subtask-{{.ID}}" class="subtask-item d-flex align-items-center gap-2 mb-1">
+    <form hx-put="/subtasks/{{.ID}}" hx-target="#subtask-{{.ID}}" hx-swap="outerHTML" class="d-flex gap-2">
+      <input type="hidden" name="title" value="{{.Title}}" />
+      <input type="checkbox" name="done" value="true" {{if .Done}}checked{{end}} onchange="this.form.submit()" />
+      <!-- <span style="{{if .Done}}text-decoration: line-through;{{end}}">{{.Title}}</span> -->
+      <span>{{.Title}}</span>
+    </form>
+    
+    <button 
+      hx-delete="/subtasks/{{.ID}}" 
+      hx-target="#subtask-{{.ID}}" 
+      hx-swap="outerHTML"
+      class="btn btn-outline-danger btn-sm">
+      ✕
+    </button>
+  </div>
+  
