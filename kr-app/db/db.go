@@ -2,26 +2,29 @@ package db
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
-	"github.com/go-sql-driver/mysql"
-//	"os"
+	"os"
 
-//	_ "github.com/mattn/go-sqlite3" // o usa el driver de MySQL si prefieres
+	"github.com/go-sql-driver/mysql"
+	//	_ "github.com/mattn/go-sqlite3" // o usa el driver de MySQL si prefieres
 )
 
 var DB *sql.DB
 
 func Init() {
 	var err error
-	
+
 	cfg := mysql.NewConfig()
-    cfg.User = os.Getenv("DBUSER")
-    cfg.Passwd = os.Getenv("DBPASS")
-    cfg.Net = "tcp"
-    cfg.Addr = os.Getenv("DBCONN_STR")
-    cfg.DBName = "recordings"
-	
-	DB, err = sql.Open("mysql", cfg.FormatDSN()) 
+	cfg.User = os.Getenv("DBUSER")
+	cfg.Passwd = os.Getenv("DBPASS")
+	cfg.Net = "tcp"
+	cfg.Addr = os.Getenv("DBCONN_STR")
+	cfg.DBName = "recordings"
+
+	fmt.Printf("cfg: %v\n", cfg)
+
+	DB, err = sql.Open("mysql", cfg.FormatDSN())
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -47,9 +50,11 @@ func createTables() {
 	);`
 
 	if _, err := DB.Exec(krTable); err != nil {
-		log.Fatal(err)
+		//log.Fatal(err)
+		log.Printf("%v\n", err)
 	}
 	if _, err := DB.Exec(subTaskTable); err != nil {
-		log.Fatal(err)
+		//log.Fatal(err)
+		log.Printf("%v", err)
 	}
 }
