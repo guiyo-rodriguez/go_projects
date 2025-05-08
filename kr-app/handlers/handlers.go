@@ -120,3 +120,18 @@ func DeleteSubTaskHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	w.WriteHeader(http.StatusNoContent)
 }
+
+func IndexHandler(w http.ResponseWriter, r *http.Request) {
+	tmpl := template.Must(template.ParseFiles(
+		"templates/index.html",
+		"templates/kr_list.html",
+		"templates/kr_item.html",
+		"templates/subtask_item.html",
+	))
+	krs, err := db.GetAllKeyResults()
+	if err != nil {
+		http.Error(w, err.Error(), 500)
+		return
+	}
+	tmpl.Execute(w, krs)
+}
