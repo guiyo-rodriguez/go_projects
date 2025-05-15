@@ -1,0 +1,57 @@
+<div class="p-3 bg-light border rounded">
+    <h6 class="mb-3">Subtareas de "{{.KR.Title}}"</h6>
+  
+    <ul class="list-group mb-3">
+      {{range .SubTasks}}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <span>
+          {{if .Done}}✅{{else}}⬜{{end}} {{.Title}}
+        </span>
+        
+        <div>
+          {{if not .Done}}
+          <button 
+            hx-put="/subtasks/{{.ID}}" 
+            hx-target="closest li" 
+            hx-swap="outerHTML"
+            class="btn btn-outline-success btn-sm me-1">
+            Marcar como hecha
+          </button>
+          {{end}}
+          <button 
+            hx-delete="/subtasks/{{.ID}}" 
+            hx-target="closest li" 
+            hx-swap="outerHTML"
+            class="btn btn-outline-danger btn-sm">
+            Eliminar
+          </button>
+          <button 
+            hx-get="/subtasks/{{.ID}}/edit" 
+            
+            hx-target="closest li" 
+            hx-swap="outerHTML"
+            class="btn btn-outline-secondary btn-sm me-1">
+            Editar
+          </button>
+        </div>
+      </li>
+      {{end}}
+      {{if not .SubTasks}}
+        <li class="list-group-item">No hay subtareas aún.</li>
+      {{end}}
+    </ul>
+  
+    <form 
+      hx-post="/krs/{{.KR.ID}}/subtasks" 
+      hx-target="closest div" 
+      hx-swap="outerHTML" 
+      class="row g-2">
+      <div class="col-8">
+        <input type="text" name="title" placeholder="Nueva subtarea" required class="form-control" />
+      </div>
+      <div class="col-4">
+        <button type="submit" class="btn btn-primary w-100">Agregar</button>
+      </div>
+    </form>
+  </div>
+  

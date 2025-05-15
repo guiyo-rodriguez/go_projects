@@ -1,0 +1,14 @@
+<li class="list-group-item" id="subtask-{{.ID}}">
+    <form 
+      hx-put="/subtasks/{{.ID}}" 
+      hx-target="closest li" 
+      hx-swap="outerHTML"
+      class="d-flex justify-content-between align-items-center">
+      <input 
+        type="text" name="title" value="{{.Title}}" 
+        class="form-control me-2" required />
+      <input type="checkbox" name="done" value="true" {{if .Done}}checked{{end}} />
+      <button type="submit" class="btn btn-primary btn-sm">Guardar</button>
+    </form>
+</li>
+  
