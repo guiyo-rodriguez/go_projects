@@ -1,17 +1,28 @@
-<div id="subtask-{{.ID}}" class="subtask-item d-flex align-items-center gap-2 mb-1">
-    <form hx-put="/subtasks/{{.ID}}" hx-target="#subtask-{{.ID}}" hx-swap="outerHTML" class="d-flex gap-2">
-      <input type="hidden" name="title" value="{{.Title}}" />
-      <input type="checkbox" name="done" value="true" {{if .Done}}checked{{end}} onchange="this.form.submit()" />
-      <!-- <span style="{{if .Done}}text-decoration: line-through;{{end}}">{{.Title}}</span> -->
-      <span>{{.Title}}</span>
-    </form>
-    
+<li class="list-group-item d-flex justify-content-between align-items-center" id="subtask-{{.ID}}">
+  <span id="title-{{.ID}}">
+    {{if .Done}}✅{{else}}⬜{{end}} {{.Title}}
+  </span>
+  <div>
+    <button 
+      hx-get="/subtasks/{{.ID}}/edit" 
+      hx-target="#subtask-{{.ID}}" 
+      hx-swap="outerHTML"
+      class="btn btn-outline-secondary btn-sm me-1">
+      Editar
+    </button>
+    <button 
+      hx-put="/subtasks/{{.ID}}" 
+      hx-target="#subtask-{{.ID}}" 
+      hx-swap="outerHTML"
+      class="btn btn-outline-success btn-sm me-1">
+      Marcar como hecha
+    </button>
     <button 
       hx-delete="/subtasks/{{.ID}}" 
       hx-target="#subtask-{{.ID}}" 
       hx-swap="outerHTML"
       class="btn btn-outline-danger btn-sm">
-      ✕
+      Eliminar
     </button>
   </div>
-  
+</li>

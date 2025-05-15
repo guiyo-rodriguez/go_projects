@@ -1,23 +1,28 @@
-<div id="kr-{{.ID}}" class="kr-item border p-3 mb-3 rounded shadow-sm">
-    <h3>{{.Title}}</h3>
-    <p>{{.Description}}</p>
-  
+<tr id="kr-{{.ID}}">
+  <td>{{.Title}}</td>
+  <td>{{.Description}}</td>
+  <td>
     <button 
       hx-delete="/krs/{{.ID}}" 
       hx-target="#kr-{{.ID}}" 
       hx-swap="outerHTML"
-      class="btn btn-danger btn-sm">
-      Eliminar KR
+      class="btn btn-outline-danger btn-sm me-1">
+      Eliminar
     </button>
-  
-    <h5>Sub-Tareas</h5>
-    <div id="subtasks-{{.ID}}">
-      <!-- Las sub-tareas se pueden cargar con un GET si querés -->
-    </div>
-  
-    <form hx-post="/krs/{{.ID}}/subtasks" hx-target="#subtasks-{{.ID}}" hx-swap="beforeend" class="mt-2">
-      <input type="text" name="title" placeholder="Nueva sub-tarea" required class="form-control form-control-sm mb-1" />
-      <button type="submit" class="btn btn-primary btn-sm">Agregar</button>
-    </form>
-  </div>
+
+    <button 
+      hx-get="/krs/{{.ID}}/subtasks" 
+      hx-target="#subtasks-row-{{.ID}}" 
+      hx-swap="innerHTML"
+      class="btn btn-outline-primary btn-sm">
+      Administrar Subtareas
+    </button>
+  </td>
+</tr>
+
+<!-- Fila expandible para subtareas -->
+<tr id="subtasks-row-{{.ID}}">
+  <td colspan="3"></td>
+</tr>
+
   

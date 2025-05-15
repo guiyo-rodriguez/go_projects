@@ -1,13 +1,42 @@
-<div id="kr-list">
-    {{range .}}
-      {{template "kr_item.html" .}}
-    {{end}}
-  
-    <h4>Nuevo Resultado Clave</h4>
-    <form hx-post="/krs" hx-target="#kr-list" hx-swap="beforeend" class="mb-4">
-      <input type="text" name="title" placeholder="Título" required class="form-control mb-1" />
-      <textarea name="description" placeholder="Descripción" class="form-control mb-2"></textarea>
-      <button type="submit" class="btn btn-success">Agregar KR</button>
-    </form>
+<h4 class="mb-3">Nuevo Resultado Clave</h4>
+<form 
+  hx-post="/krs" 
+  hx-target="#kr-table-body" 
+  hx-swap="beforeend" 
+  class="mb-4 row g-2 align-items-end"
+>
+  <div class="col-md-4">
+    <input type="text" name="title" placeholder="Título" required class="form-control" />
+  </div>
+  <div class="col-md-5">
+    <textarea name="description" placeholder="Descripción" class="form-control"></textarea>
   </div>
   
+  <div class="col-md-3">
+    <select name="sector_id" class="form-select" required>
+      <option value="">Seleccionar sector</option>
+      {{range .Sectors}}
+        <option value="{{.ID}}">{{.Name}}</option>
+      {{end}}
+    </select>
+  </div>
+
+  <div class="col-md-3">
+    <button type="submit" class="btn btn-success w-100">Agregar KR</button>
+  </div>
+</form>
+
+<table class="table table-bordered table-hover align-middle">
+  <thead class="table-light">
+    <tr>
+      <th>Título</th>
+      <th>Descripción</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody id="kr-table-body">
+    {{range .KeyResults}}
+      {{template "kr_item.html" .}}
+    {{end}}
+  </tbody>
+</table>
