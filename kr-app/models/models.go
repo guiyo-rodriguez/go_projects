@@ -25,3 +25,9 @@ type PageDataKeyResults struct {
 	KeyResults []KeyResult
 	Sectors    []Sector
 }
+
+type KrEditPage struct {
+	KeyResult KeyResult
+	Sectors   []Sector
+	Subtasks  []SubTask
+}

@@ -9,8 +9,19 @@
       class="btn btn-outline-danger btn-sm me-1">
       Eliminar
     </button>
-
+<!-- 
     <button 
+      href="/krs/{{.ID}}/edit" hx-target="#modal-body" hx-swap="innerHTML
+      class="btn btn-sm btn-secondary">
+      Editar
+    </button>
+
+ -->    
+ <button onclick="window.location.href='/krs/{{.ID}}/edit'" class="btn btn-sm btn-secondary">
+  Editar
+</button>
+
+ <button 
       hx-get="/krs/{{.ID}}/subtasks" 
       hx-target="#subtasks-row-{{.ID}}" 
       hx-swap="innerHTML"

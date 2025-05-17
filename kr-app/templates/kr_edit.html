@@ -1,0 +1,65 @@
+{{define "kr_edit.html"}}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Editar Resultado Clave</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+</head>
+<body class="container my-4">
+
+  <h2>Editar Resultado Clave</h2>
+
+  <form 
+    hx-put="/krs/{{.KeyResult.ID}}" 
+    hx-target="this" 
+    hx-swap="outerHTML"
+    class="mb-4"
+  >
+    <div class="mb-3">
+      <label for="title" class="form-label">Título</label>
+      <input type="text" class="form-control" name="title" value="{{.KeyResult.Title}}" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="description" class="form-label">Descripción</label>
+      <textarea class="form-control" name="description">{{.KeyResult.Description}}</textarea>
+    </div>
+
+    <div class="mb-3">
+      <label for="sector" class="form-label">Sector</label>
+      <select name="sector_id" class="form-select">
+        {{range .Sectors}}
+          <option value="{{.ID}}" {{if eq .ID $.KeyResult.SectorID}}selected{{end}}>{{.Name}}</option>
+        {{end}}
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a href="/" class="btn btn-secondary">Volver</a>
+  </form>
+
+  <hr>
+
+  <h4>Subtareas</h4>
+  <ul class="list-group mb-3" id="subtask-list">
+    {{range .Subtasks}}
+      {{template "subtask_item.html" .}}
+    {{end}}
+  </ul>
+
+  <form 
+    hx-post="/krs/{{.KeyResult.ID}}/subtasks"
+    hx-target="#subtask-list"
+    hx-swap="beforeend"
+    class="d-flex gap-2"
+  >
+    <input type="hidden" name="kr_id" value="{{.KeyResult.ID}}">
+    <input type="text" name="title" placeholder="Nueva subtarea" class="form-control" required>
+    <button type="submit" class="btn btn-success">Agregar</button>
+  </form>
+
+</body>
+</html>
+{{end}}

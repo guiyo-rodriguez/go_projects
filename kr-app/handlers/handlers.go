@@ -75,6 +75,34 @@ func DeleteKRHandler(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusNoContent)
 }
 
+func EditKeyResultHandler(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	id, err := strconv.Atoi(vars["id"])
+	if err != nil {
+		http.Error(w, "ID inválido", http.StatusBadRequest)
+		return
+	}
+
+	kr, err := db.GetKeyResult(id)
+	if err != nil {
+		http.Error(w, "KR no encontrado", http.StatusNotFound)
+		return
+	}
+
+	sectors, _ := db.GetAllSectors()
+	subtasks, _ := db.GetSubTasksByKRID(id)
+
+	data := models.KrEditPage{
+		KeyResult: kr,
+		Sectors:   sectors,
+		Subtasks:  subtasks,
+	}
+
+	//tmpl := template.Must(template.ParseFiles("templates/kr_edit.html"))
+	//template.Execute(w, data)
+	templates.ExecuteTemplate(w, "kr_edit.html", data)
+}
+
 // Agregar sub-tarea a un KR
 func CreateSubTaskHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("CreateSubTaskHandler")
@@ -226,6 +254,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		//"templates/subtask_item.html",
 		"templates/subtasks_view.html",
 		"templates/subtask_edit_form.html",
+		"templates/kr_edit.html",
 	))
 	krs, err := db.GetAllKeyResults()
 	if err != nil {

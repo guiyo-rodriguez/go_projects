@@ -19,6 +19,11 @@ func InsertKeyResult(kr models.KeyResult) (int, error) {
 	return int(id), nil
 }
 
+func UpdateKeyResult(kr models.KeyResult) error {
+	_, err := DB.Exec("UPDATE key_results SET (title, description, sector_id) VALUES (?, ?, ?)", kr.Title, kr.Description, kr.SectorID)
+	return err
+}
+
 func GetAllKeyResults() ([]models.KeyResult, error) {
 	rows, err := DB.Query("SELECT id, title, description FROM key_results")
 	if err != nil {

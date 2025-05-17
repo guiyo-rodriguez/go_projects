@@ -26,6 +26,7 @@ func main() {
 	r.HandleFunc("/krs/{id}/subtasks", handlers.GetSubTasksHandler).Methods("GET")
 	r.HandleFunc("/subtasks/{id}/edit", handlers.EditSubTaskFormHandler).Methods("GET")
 	r.HandleFunc("/subtasks/{id}", handlers.UpdateSubTaskHandler).Methods("PUT")
+	r.HandleFunc("/krs/{id}/edit", handlers.EditKeyResultHandler).Methods("GET")
 
 	/* r.HandleFunc("/krs", handlers.GetAllKRsHandler).Methods("GET")
 	r.HandleFunc("/krs", handlers.CreateKRHandler).Methods("POST")
