@@ -20,7 +20,7 @@ func InsertKeyResult(kr models.KeyResult) (int, error) {
 }
 
 func UpdateKeyResult(kr models.KeyResult) error {
-	_, err := DB.Exec("UPDATE key_results SET (title, description, sector_id) VALUES (?, ?, ?)", kr.Title, kr.Description, kr.SectorID)
+	_, err := DB.Exec("UPDATE key_results SET title = ?, description = ?, sector_id = ? WHERE id = ?", kr.Title, kr.Description, kr.SectorID, kr.ID)
 	return err
 }
 
@@ -62,8 +62,9 @@ func GetAllSectors() ([]models.Sector, error) {
 
 func GetKeyResult(id int) (models.KeyResult, error) {
 	var kr models.KeyResult
-	err := DB.QueryRow("SELECT id, title, description FROM key_results WHERE id = ?", id).
-		Scan(&kr.ID, &kr.Title, &kr.Description)
+	err := DB.QueryRow("SELECT id, title, description, sector_id FROM key_results WHERE id = ?", id).
+		Scan(&kr.ID, &kr.Title, &kr.Description, &kr.SectorID)
+
 	return kr, err
 }
 

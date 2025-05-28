@@ -20,6 +20,7 @@ func main() {
 	r.HandleFunc("/krs", handlers.GetAllKRsHandler).Methods("GET")
 	r.HandleFunc("/krs", handlers.CreateKRHandler).Methods("POST")
 	r.HandleFunc("/krs/{id}", handlers.DeleteKRHandler).Methods("DELETE")
+	r.HandleFunc("/krs/{id}", handlers.UpdateKRHandler).Methods("PUT")
 	r.HandleFunc("/krs/{id}/subtasks", handlers.CreateSubTaskHandler).Methods("POST")
 	//r.HandleFunc("/subtasks/{id}", handlers.UpdateSubTaskHandler).Methods("PUT")
 	r.HandleFunc("/subtasks/{id}", handlers.DeleteSubTaskHandler).Methods("DELETE")

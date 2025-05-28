@@ -1,12 +1,12 @@
 package models
 
 type KeyResult struct {
-	ID          int       `json:"id"`
-	Title       string    `json:"title"`
-	Description string    `json:"description"`
-	SectorID    int       `json:"sector_id"`
-	SectorName  string    `json:"sector_name"`
-	SubTasks    []SubTask `json:"sub_tasks,omitempty"`
+	ID          int
+	Title       string
+	Description string
+	SectorID    int
+	SectorName  string
+	SubTasks    []SubTask
 }
 
 type SubTask struct {
@@ -30,4 +30,12 @@ type KrEditPage struct {
 	KeyResult KeyResult
 	Sectors   []Sector
 	Subtasks  []SubTask
+}
+
+type KrUpdPage struct {
+	ID          int
+	Title       string
+	Description string
+	SectorID    int
+	Sectors     []Sector
 }

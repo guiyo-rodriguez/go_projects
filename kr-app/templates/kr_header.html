@@ -1,0 +1,27 @@
+{{define "kr_header.html"}}
+
+<form hx-put="/krs/{{.ID}}" hx-target="this" hx-swap="outerHTML" class="mb-4">
+    <div class="mb-3">
+        <label for="title" class="form-label">Título</label>
+        <input type="text" class="form-control" name="title" value="{{.Title}}" required>
+    </div>
+
+    <div class="mb-3">
+        <label for="description" class="form-label">Descripción</label>
+        <textarea class="form-control" name="description">{{.Description}}</textarea>
+    </div>
+
+    <div class="mb-3">
+        <label for="sector" class="form-label">Sector</label>
+        <select name="sector_id" class="form-select">
+            {{range .Sectors}}
+            <option value="{{.ID}}" {{if eq .ID $.SectorID}}selected{{end}}>{{.Name}}</option>
+            {{end}}
+        </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    <a href="/" class="btn btn-secondary">Volver</a>
+</form>
+
+{{end}}

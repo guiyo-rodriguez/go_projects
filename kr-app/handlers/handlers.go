@@ -64,6 +64,48 @@ func CreateKRHandler(w http.ResponseWriter, r *http.Request) {
 	templates.ExecuteTemplate(w, "kr_item.html", kr)
 }
 
+func UpdateKRHandler(w http.ResponseWriter, r *http.Request) {
+	log.Printf("UpdateKRHandler: %v\n", r.Body)
+	id, _ := strconv.Atoi(mux.Vars(r)["id"])
+	if err := r.ParseForm(); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+
+	sector_id, _ := strconv.Atoi(r.FormValue("sector_id"))
+	log.Printf("sector_id: %v\n", sector_id)
+	kr := models.KeyResult{
+		ID:          id,
+		Title:       r.FormValue("title"),
+		Description: r.FormValue("description"),
+		SectorID:    sector_id,
+	}
+
+	log.Printf("kr: %v\n", kr)
+
+	err := db.UpdateKeyResult(kr)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	//kr.ID = id
+
+	sectors, err := db.GetAllSectors()
+
+	krpage := models.KrUpdPage{
+		ID:          id,
+		Title:       kr.Title,
+		Description: kr.Description,
+		SectorID:    kr.SectorID,
+		Sectors:     sectors,
+	}
+
+	log.Printf("krpage: %v\n", krpage)
+
+	// Devolver un fragmento HTML que HTMX puede insertar
+	templates.ExecuteTemplate(w, "kr_header.html", krpage)
+}
+
 // Eliminar un KR
 func DeleteKRHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("DeleteKRHandler")
@@ -251,7 +293,7 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		"templates/index.html",
 		"templates/kr_list.html",
 		"templates/kr_item.html",
-		//"templates/subtask_item.html",
+		"templates/subtask_item.html",
 		"templates/subtasks_view.html",
 		"templates/subtask_edit_form.html",
 		"templates/kr_edit.html",
