@@ -2,38 +2,33 @@
   <td>{{.Title}}</td>
   <td>{{.Description}}</td>
   <td>
-    <button 
-      hx-delete="/krs/{{.ID}}" 
-      hx-target="#kr-{{.ID}}" 
-      hx-swap="outerHTML"
+    <button hx-delete="/krs/{{.ID}}" hx-target="#kr-{{.ID}}" hx-swap="outerHTML"
       class="btn btn-outline-danger btn-sm me-1">
       Eliminar
     </button>
-<!-- 
+    <!-- 
     <button 
       href="/krs/{{.ID}}/edit" hx-target="#modal-body" hx-swap="innerHTML
       class="btn btn-sm btn-secondary">
       Editar
     </button>
 
- -->    
- <button onclick="window.location.href='/krs/{{.ID}}/edit'" class="btn btn-sm btn-secondary">
-  Editar
-</button>
+ -->
+    <button onclick="window.location.href='/krs/{{.ID}}/edit'" class="btn btn-sm btn-secondary">
+      Editar
+    </button>
 
- <button 
+    <!-- <button 
       hx-get="/krs/{{.ID}}/subtasks" 
       hx-target="#subtasks-row-{{.ID}}" 
       hx-swap="innerHTML"
       class="btn btn-outline-primary btn-sm">
       Administrar Subtareas
-    </button>
+    </button> -->
   </td>
 </tr>
 
 <!-- Fila expandible para subtareas -->
-<tr id="subtasks-row-{{.ID}}">
+<!-- <tr id="subtasks-row-{{.ID}}">
   <td colspan="3"></td>
-</tr>
-
-  
+</tr> -->

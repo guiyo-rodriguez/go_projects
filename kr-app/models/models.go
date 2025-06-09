@@ -10,10 +10,12 @@ type KeyResult struct {
 }
 
 type SubTask struct {
-	ID    int    `json:"id"`
-	KRID  int    `json:"kr_id"`
-	Title string `json:"title"`
-	Done  bool   `json:"done"`
+	ID       int     `json:"id"`
+	KRID     int     `json:"kr_id"`
+	Title    string  `json:"title"`
+	Done     bool    `json:"done"`
+	JiraCode string  `json:"jiracode"`
+	Contrib  float32 `json:"contrib"`
 }
 
 type Sector struct {

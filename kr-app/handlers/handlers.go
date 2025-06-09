@@ -153,11 +153,14 @@ func CreateSubTaskHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	krID, _ := strconv.Atoi(mux.Vars(r)["id"])
+	contrib, _ := strconv.ParseFloat(r.FormValue("contrib"), 32)
 
 	st := models.SubTask{
-		KRID:  krID,
-		Title: r.FormValue("title"),
-		Done:  false,
+		KRID:     krID,
+		Title:    r.FormValue("title"),
+		Done:     false,
+		JiraCode: r.FormValue("jiracode"),
+		Contrib:  float32(contrib),
 	}
 
 	id, err := db.InsertSubTask(st)
@@ -171,6 +174,7 @@ func CreateSubTaskHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 // Actualizar sub-tarea (por ejemplo marcar como hecha)
+// TODO: Ver si realmente se está ejecutando esta instrucción
 
 func UpdateSubTaskHandler(w http.ResponseWriter, r *http.Request) {
 	log.Printf("UpdateSubTaskHandler, r: %v\n", r.Body)
@@ -181,10 +185,14 @@ func UpdateSubTaskHandler(w http.ResponseWriter, r *http.Request) {
 	id, _ := strconv.Atoi(mux.Vars(r)["id"])
 	done := r.FormValue("done") == "true"
 
+	contrib, _ := strconv.ParseFloat(r.FormValue("contrib"), 32)
+
 	st := models.SubTask{
-		ID:    id,
-		Title: r.FormValue("title"),
-		Done:  done,
+		ID:       id,
+		Title:    r.FormValue("title"),
+		Done:     done,
+		JiraCode: r.FormValue("jiracode"),
+		Contrib:  float32(contrib),
 	}
 
 	log.Printf("UpdateSubTaskHandler, st: %v\n", st)
@@ -248,10 +256,8 @@ func GetSubTasksHandler(w http.ResponseWriter, r *http.Request) {
 		SubTasks: subtasks,
 	}
 
-	//log.Printf("tmpl: %v", tmpl)
 	log.Printf("data: %v", data)
 
-	//tmpl.Execute(w, data)
 	templates.ExecuteTemplate(w, "subtasks_view.html", data)
 }
 
@@ -265,43 +271,15 @@ func EditSubTaskFormHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmpl := template.Must(template.ParseFiles("templates/subtask_edit_form.html"))
-	tmpl.Execute(w, st)
+	templates.ExecuteTemplate(w, "subtask_edit_form.html", st)
 }
 
-/*
-	func UpdateSubTaskHandler(w http.ResponseWriter, r *http.Request) {
-		log.Printf("UpdateSubTaskHandler: %v\n", r.Body)
-		vars := mux.Vars(r)
-		id, _ := strconv.Atoi(vars["id"])
-		title := r.FormValue("title")
-
-		err := db.UpdateSubTaskTitle(id, title)
-		if err != nil {
-			http.Error(w, "No se pudo actualizar", 500)
-			return
-		}
-
-		st, _ := db.GetSubTask(id)
-
-		tmpl := template.Must(template.ParseFiles("templates/subtask_item.html"))
-		tmpl.Execute(w, st)
-	}
-*/
 func IndexHandler(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles(
-		"templates/index.html",
-		"templates/kr_list.html",
-		"templates/kr_item.html",
-		"templates/subtask_item.html",
-		"templates/subtasks_view.html",
-		"templates/subtask_edit_form.html",
-		"templates/kr_edit.html",
-	))
+
 	krs, err := db.GetAllKeyResults()
 	if err != nil {
 		http.Error(w, err.Error(), 500)
 		return
 	}
-	tmpl.Execute(w, krs)
+	templates.Execute(w, krs)
 }

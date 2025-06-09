@@ -76,7 +76,7 @@ func DeleteKeyResult(id int) error {
 // Sub-Tareas
 
 func InsertSubTask(st models.SubTask) (int, error) {
-	res, err := DB.Exec("INSERT INTO sub_tasks (kr_id, title, done) VALUES (?, ?, ?)", st.KRID, st.Title, st.Done)
+	res, err := DB.Exec("INSERT INTO sub_tasks (kr_id, title, done, jira_code, contrib) VALUES (?, ?, ?, ?, ?)", st.KRID, st.Title, st.Done, st.JiraCode, st.Contrib)
 	if err != nil {
 		return 0, err
 	}
@@ -86,14 +86,14 @@ func InsertSubTask(st models.SubTask) (int, error) {
 
 func GetSubTask(id int) (models.SubTask, error) {
 	var st models.SubTask
-	err := DB.QueryRow("SELECT id, kr_id, title, done FROM sub_tasks WHERE id = ?", id).
-		Scan(&st.ID, &st.KRID, &st.Title, &st.Done)
+	err := DB.QueryRow("SELECT id, kr_id, title, done, jira_code, contrib FROM sub_tasks WHERE id = ?", id).
+		Scan(&st.ID, &st.KRID, &st.Title, &st.Done, &st.JiraCode, &st.Contrib)
 	return st, err
 }
 
 func UpdateSubTask(st models.SubTask) error {
 	log.Printf("En DB.queries.UpdateSubTask, st: %v\n", st)
-	_, err := DB.Exec("UPDATE sub_tasks SET title = ?, done = ? WHERE id = ?", st.Title, st.Done, st.ID)
+	_, err := DB.Exec("UPDATE sub_tasks SET title = ?, done = ?, jira_code = ?, contrib = ? WHERE id = ?", st.Title, st.Done, st.JiraCode, st.Contrib, st.ID)
 	return err
 }
 
@@ -122,7 +122,7 @@ func GetSubTasksByKRID(id int) ([]models.SubTask, error) {
 	for rows.Next() {
 		var st models.SubTask
 
-		err := rows.Scan(&st.ID, &st.KRID, &st.Title, &st.Done)
+		err := rows.Scan(&st.ID, &st.KRID, &st.Title, &st.Done, &st.JiraCode, &st.Contrib)
 
 		if err != nil {
 			return nil, err

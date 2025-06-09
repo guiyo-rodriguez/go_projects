@@ -1,6 +1,6 @@
 <li class="list-group-item d-flex justify-content-between align-items-center" id="subtask-{{.ID}}">
   <span id="title-{{.ID}}">
-    {{if .Done}}✅{{else}}⬜{{end}} {{.Title}}
+    {{if .Done}}✅{{else}}⬜{{end}} <b>{{.JiraCode}}: </b>{{.Title}} <b>Contrib: </b>{{.Contrib}}
   </span>
   <div>
     <button 
@@ -10,13 +10,13 @@
       class="btn btn-outline-secondary btn-sm me-1">
       Editar
     </button>
-    <button 
+    <!-- <button 
       hx-put="/subtasks/{{.ID}}" 
       hx-target="#subtask-{{.ID}}" 
       hx-swap="outerHTML"
       class="btn btn-outline-success btn-sm me-1">
       Marcar como hecha
-    </button>
+    </button> -->
     <button 
       hx-delete="/subtasks/{{.ID}}" 
       hx-target="#subtask-{{.ID}}" 
