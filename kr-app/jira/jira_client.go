@@ -21,7 +21,7 @@ type IssueResponse struct {
 func CheckState() {
 	// 🔧 Configura tus datos
 	jiraDomain := ""
-	issueKey := "AE-125"
+	issueKey := ""
 	email := ""
 	apiToken := ""
 
