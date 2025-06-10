@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <title>Administrador de KRs</title>
@@ -9,24 +10,31 @@
     body {
       padding: 2rem;
     }
+
     .kr-item {
       background-color: #f8f9fa;
     }
   </style>
 </head>
+
 <body>
+  <!-- <form hx-post="/verify" hx-target="closest div" hx-swap="outerHTML" class="row g-2"> -->
+
+  <div class="col-4">
+    <button hx-get="/verify" hx-target="closest li" hx-swap="outerHTML"
+      class="btn btn-outline-secondary btn-sm me-1">
+      Verificar
+    </button>
+  </div>
+  <!-- </form> -->
   <div class="container">
     <h1 class="mb-4">Resultados Clave (KRs)</h1>
 
     <!-- Contenedor de la lista de KRs -->
-    <div 
-      id="kr-list" 
-      hx-get="/krs" 
-      hx-trigger="load" 
-      hx-target="#kr-list" 
-      hx-swap="innerHTML">
+    <div id="kr-list" hx-get="/krs" hx-trigger="load" hx-target="#kr-list" hx-swap="innerHTML">
       Cargando KRs...
     </div>
   </div>
 </body>
+
 </html>

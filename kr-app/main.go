@@ -30,6 +30,8 @@ func main() {
 	r.HandleFunc("/subtasks/{id}", handlers.DeleteSubTaskHandler).Methods("DELETE")
 	r.HandleFunc("/subtasks/{id}/edit", handlers.EditSubTaskFormHandler).Methods("GET")
 
+	r.HandleFunc("/verify", handlers.VerifyTicketStatusHandler).Methods("GET")
+
 	//r.PathPrefix("/").Handler(http.FileServer(http.Dir("./static/")))
 
 	log.Println("Servidor corriendo en http://localhost:8080")

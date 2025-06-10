@@ -10,6 +10,8 @@ import (
 	"kr-app/models"
 
 	"github.com/gorilla/mux"
+
+	"kr-app/jira"
 )
 
 var templates = template.Must(template.ParseGlob("templates/*.html"))
@@ -282,4 +284,12 @@ func IndexHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	templates.Execute(w, krs)
+}
+
+func VerifyTicketStatusHandler(w http.ResponseWriter, r *http.Request) {
+	log.Printf("VerifyTicketStatusHandler")
+
+	jira.CheckState()
+
+	w.WriteHeader(http.StatusNoContent)
 }
