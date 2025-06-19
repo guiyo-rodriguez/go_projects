@@ -20,10 +20,10 @@ type IssueResponse struct {
 
 func CheckState() {
 	// 🔧 Configura tus datos
-	jiraDomain := ""
-	issueKey := ""
-	email := ""
-	apiToken := ""
+	jiraDomain := os.Getenv("JIRA_DOMAIN")
+	issueKey := "AE-195"
+	email := os.Getenv("JIRA_EMAIL")
+	apiToken := os.Getenv("JIRA_TOKEN")
 
 	// 📦 Armar la URL
 	url := fmt.Sprintf("%s/rest/api/3/issue/%s", jiraDomain, issueKey)
