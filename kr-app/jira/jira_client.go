@@ -18,6 +18,7 @@ type IssueResponse struct {
 	} `json:"fields"`
 }
 
+// CheckState verifies issue status that could be backlog, in progress or done.
 func CheckState() {
 	// 🔧 Configura tus datos
 	jiraDomain := os.Getenv("JIRA_DOMAIN")
